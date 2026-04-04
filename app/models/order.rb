@@ -33,6 +33,7 @@ class Order < ApplicationRecord
   end
 
   def calculate_total
+    return if total_amount.to_f > 0
     self.total_amount = order_items.sum { |item| item.quantity * item.unit_price }
   end
 

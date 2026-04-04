@@ -1,9 +1,10 @@
 class Event < ApplicationRecord
   belongs_to :user
   has_many :ticket_tiers, dependent: :destroy
-  has_many :orders
+  has_many :orders, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
 
-  validates :title, presence: true
+  validates :title, :description, :venue, :city, :starts_at, :ends_at, presence: true
 
   scope :published, -> { where(status: "published") }
   scope :upcoming, -> { where("starts_at > ?", Time.current) }

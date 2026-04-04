@@ -16,3 +16,4 @@ test:
   username: eventnest
   password: eventnest_dev
   host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+  

@@ -7,7 +7,7 @@ module Api
         events = Event.published.upcoming
 
         if params[:search].present?
-          events = events.where("title LIKE '%#{params[:search]}%' OR description LIKE '%#{params[:search]}%'")
+          events = events.where("title LIKE ? OR description LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
         end
 
         if params[:category].present?
@@ -33,6 +33,7 @@ module Api
             organizer: event.user.name,
             total_tickets: event.total_tickets,
             tickets_sold: event.total_sold,
+            bookmarks_count: (event.user_id == current_user&.id ? event.bookmarks.count : nil),
             ticket_tiers: event.ticket_tiers.map { |t|
               {
                 id: t.id,
@@ -71,7 +72,8 @@ module Api
               sold: t.sold_count,
               available: t.available_quantity
             }
-          }
+          },
+          bookmarks_count: (event.user_id == current_user&.id ? event.bookmarks.count : nil)
         }
       end
 
