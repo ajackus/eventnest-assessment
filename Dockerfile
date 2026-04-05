@@ -6,12 +6,12 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile ./
 RUN bundle install
 
 COPY . .
 
-RUN chmod +x bin/setup bin/docker-entrypoint .git-hooks/*
+RUN chmod +x bin/setup bin/docker-entrypoint bin/rails bin/rake .git-hooks/* 2>/dev/null || true
 
 ENTRYPOINT ["bin/docker-entrypoint"]
 EXPOSE 3000
